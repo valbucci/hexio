@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hexio"
+version = "0.0.1-1"
+author = "Valerio Bucci"
+description = "Utility package to handle I/O of hex-compatible data."
+url = "https://github.com/valbucci/hexio"
+license = "GPLv3"
+python_requires = ">=3.11"
