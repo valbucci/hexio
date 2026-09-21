@@ -1,8 +1,7 @@
 """Package for handling I/O of hex-compatible values (str, int, bytes)."""
 
-from typing import Self, Union
 import logging
-
+from typing import Self, Union
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
@@ -140,7 +139,7 @@ class HexStr(str):
             return cls.from_bytes(value)
         else:
             logger.error(f"Tried to create {cls.__name__} from object: {value!r}")
-            raise ValueError(f"Unsupported type: {type(value)}")
+            raise TypeError(f"Unsupported type: {type(value)}")
 
     def __len__(self) -> int:
         return len(str(self))
@@ -251,8 +250,6 @@ class HexStr(str):
             is_equal = self.__str__() == HexStr(other).__str__()
         except ValueError:
             logger.warning("Tried to compare HexStr with non-hex string: %r", other)
-        except Exception as e:
-            logger.error(f"Tried to compare HexStr with {other!r}: {e}")
 
         return is_equal
 
@@ -288,11 +285,11 @@ class HexInt(int):
             return super().__new__(cls, int(value))
         elif isinstance(value, int):
             return super().__new__(cls, value)
-        elif isinstance(value, str) or isinstance(value, bytes):
+        elif isinstance(value, (str, bytes)):
             return super().__new__(cls, int(HexStr(value)))
         else:
             logger.error(f"Tried to create {cls.__name__} from object: {value!r}")
-            raise ValueError(f"Unsupported type: {type(value)}")
+            raise TypeError(f"Unsupported type: {type(value)}")
 
     def __hash__(self) -> int:
         return hash(self.__int__())
@@ -309,7 +306,7 @@ class HexInt(int):
     def __eq__(self, other: object) -> bool:
         if isinstance(other, int):
             return self.__int__() == other
-        elif isinstance(other, str) or isinstance(other, bytes):
+        elif isinstance(other, (str, bytes)):
             return self.__int__() == int(HexStr(other))
         else:
             logger.warning(f"Tried unsupported comparison {self!r} == {other!r}")
@@ -318,7 +315,7 @@ class HexInt(int):
     def __lt__(self, other: object) -> bool:
         if isinstance(other, int):
             return self.__int__() < other
-        elif isinstance(other, str) or isinstance(other, bytes):
+        elif isinstance(other, (str, bytes)):
             return self.__int__() < int(HexStr(other))
         else:
             logger.warning(f"Tried unsupported comparison {self!r} < {other!r}")

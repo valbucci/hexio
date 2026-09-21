@@ -1,5 +1,6 @@
 import pytest
-from hexio import HexStr, Nibble, HexOffset, HexInt
+
+from hexio import HexInt, HexOffset, HexStr, Nibble
 
 
 class TestHexStr:
