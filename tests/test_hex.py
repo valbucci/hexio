@@ -131,6 +131,11 @@ class TestHexStr:
         assert HexStr("0x1234") | HexStr("01234") == HexStr("0x1234")
 
         assert HexStr("0xffffff") | 0xAA0011 == HexStr("0xffffff")
+        
+    def test_slice(self):
+        example = HexStr("1234")
+        assert example[2:] == "34"
+        assert example[2:] == HexStr("34")
 
 
 class TestNibble:
