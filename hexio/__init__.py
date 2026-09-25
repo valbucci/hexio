@@ -295,7 +295,16 @@ class HexInt(int):
         return hash(self.__int__())
 
     def __bytes__(self) -> bytes:
-        return self.to_bytes()
+        bit_length = self.bit_length()
+        byte_length = bit_length // 8
+        if bit_length % 8 != 0:
+            byte_length = byte_length + 1
+
+        return self.to_bytes(
+            length=byte_length,
+            byteorder="big",
+            signed=False
+        )
 
     def __str__(self) -> str:
         return f"0x{self:x}"
@@ -337,6 +346,13 @@ class HexInt(int):
     def __sub__(self, other: HexValue) -> Self:
         other = hexvalue_to_int(other)
         return self.__class__(int(self) - other)
+    
+    def __mul__(self, other: HexValue) -> Self:
+        other = hexvalue_to_int(other)
+        return self.__class__(int(self) * other)
+    
+    def __rmul__(self, other: HexValue) -> Self:
+        return self.__mul__(other)
 
     def __xor__(self, other: HexValue) -> Self:
         other = hexvalue_to_int(other)
