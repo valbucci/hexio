@@ -141,7 +141,6 @@ class HexStr(str):
             logger.error(f"Tried to create {cls.__name__} from object: {value!r}")
             raise TypeError(f"Unsupported type: {type(value)}")
 
-
     def __xor__(self, other: HexValue) -> Self:
         if len(self) != len(HexStr(other)):
             logger.debug(f"HexStr length mismatch: {len(self)} != {len(HexStr(other))}")
@@ -157,30 +156,28 @@ class HexStr(str):
             logger.debug(f"HexStr length mismatch: {len(self)} != {len(HexStr(other))}")
         return self.__class__(int(self) | int(HexStr(other)))
 
-
     def __str__(self) -> str:
-            return super().__str__().upper()
+        return super().__str__().upper()
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}('{super().__str__()}')"
 
     def __int__(self) -> int:
         return int(self, 16)
-    
+
     def __bytes__(self) -> bytes:
         if len(self) % 2 == 1:
             return bytes.fromhex(f"0{self}")
         return bytes.fromhex(self)
-    
+
     def __len__(self) -> int:
-            return len(self.__str__())
+        return len(self.__str__())
 
     def __index__(self) -> int:
         return self.__int__()
-    
+
     def __hash__(self) -> int:
         return hash(self.__str__())
-
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, HexStr):
@@ -225,17 +222,15 @@ class HexStr(str):
 
     def __ge__(self, other: object) -> bool:
         return not self.__lt__(other)
-    
-    
+
     def __getitem__(self, key) -> Self:
         return self.__class__(self.__str__()[key])
 
     def __setitem__(self, key, value) -> None:
         raise TypeError("'HexStr' object does not support item assignment")
-    
+
     def __delitem__(self, key) -> None:
         raise TypeError("'HexStr' object does not support item deletion")
-
 
     @classmethod
     def from_bytes(cls, value: bytes) -> Self:
@@ -314,11 +309,7 @@ class HexInt(int):
         if bit_length % 8 != 0:
             byte_length = byte_length + 1
 
-        return self.to_bytes(
-            length=byte_length,
-            byteorder="big",
-            signed=False
-        )
+        return self.to_bytes(length=byte_length, byteorder="big", signed=False)
 
     def __str__(self) -> str:
         return f"0x{self:x}"
@@ -360,11 +351,11 @@ class HexInt(int):
     def __sub__(self, other: HexValue) -> Self:
         other = hexvalue_to_int(other)
         return self.__class__(int(self) - other)
-    
+
     def __mul__(self, other: HexValue) -> Self:
         other = hexvalue_to_int(other)
         return self.__class__(int(self) * other)
-    
+
     def __rmul__(self, other: HexValue) -> Self:
         return self.__mul__(other)
 
