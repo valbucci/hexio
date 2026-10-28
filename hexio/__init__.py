@@ -311,6 +311,11 @@ class HexInt(int):
 
         return self.to_bytes(length=byte_length, byteorder="big", signed=False)
 
+    @classmethod
+    def from_bytes(cls, bytes, *args, **kwargs) -> Self:
+        int_value = int.from_bytes(bytes, byteorder="big", signed=False)
+        return cls(int_value)
+
     def __str__(self) -> str:
         return f"0x{self:x}"
 

@@ -131,7 +131,7 @@ class TestHexStr:
         assert HexStr("0x1234") | HexStr("01234") == HexStr("0x1234")
 
         assert HexStr("0xffffff") | 0xAA0011 == HexStr("0xffffff")
-        
+
     def test_slice(self):
         example = HexStr("1234")
         assert example[2:] == "34"
@@ -183,15 +183,14 @@ class TestNibble:
 
 
 class TestHexInt:
-    
     def test_bytes(self):
-        big_int = HexInt(0xffffffffff)
+        big_int = HexInt(0xFFFFFFFFFF)
         big_bytes = bytes(big_int)
         big_hex = hex(HexInt(big_bytes))
         assert big_hex == "0xffffffffff"
-        
+
         # Make sure alignment works
-        big_int2 = big_int * 2 # this should add one bit
+        big_int2 = big_int * 2  # this should add one bit
         assert isinstance(big_int2, HexInt)
         assert big_int2.bit_length() == big_int.bit_length() + 1
         assert big_int2.bit_length() % 8 == 1
@@ -199,7 +198,11 @@ class TestHexInt:
         big_hex2 = hex(HexInt(big_bytes2))
         assert big_hex2 == "0x1fffffffffe"
         assert len(big_bytes2) == len(big_bytes) + 1
-    
+
+        # Test from and to bytes conversion
+        big_int3 = HexInt.from_bytes(big_bytes)
+        assert big_int == big_int3
+
     def test_xor(self):
         assert HexInt("0x1234") ^ HexInt("0x1235") == HexInt("0x0001")
         assert HexInt("0x1234") ^ HexInt("0x1233") == HexInt("0x0007")
