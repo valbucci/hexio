@@ -7,7 +7,7 @@ name = "hexio"
 version = "0.0.5"
 description = "Utility package to handle I/O of hex-compatible data."
 requires-python = ">=3.9"
-dependencies = ["pytest"]
+dependencies = []
 classifiers = [
   "Programming Language :: Python :: 3",
   "Operating System :: OS Independent",
